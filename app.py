@@ -83,7 +83,9 @@ def generate_sql(question, api_key):
         messages=[{"role": "user", "content": f"{SCHEMA_CONTEXT}\n\nQuestion: {question}\n\nSQL only:"}]
     )
     sql = msg.content[0].text.strip()
-    return re.sub(r"```sql|```", "", sql).strip()
+    sql = re.sub(r"```sql|```", "", sql).strip()
+    sql = sql.rstrip(";").strip()
+    return sql
 
 def generate_summary(question, df, api_key):
     client = anthropic.Anthropic(api_key=api_key)
